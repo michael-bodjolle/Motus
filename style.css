@@ -5,6 +5,18 @@
     background-color: rgb(236, 217, 167);
 }
 
+#board {
+    min-height: 55vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 3em;
+}
+#row {
+    display: flex;
+    justify-content: center;
+}
+
 h1{
     text-align: center;
     font-weight: 1000;
@@ -26,7 +38,8 @@ table{
     font-size: 10vh;
 }
 
-.case{
+#cell{
+    border: solid 2px black;
     background-color: rgb(184, 79, 79);;
     width: 12.5vh;
     height: 10vh;
