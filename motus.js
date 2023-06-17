@@ -12,7 +12,7 @@ export default class Motus {
     this.word = data[i];
     this.drawBoard();
     this.getWord();
-    // faire en sorte que toute les cases soit false (lettre qui ont trouver)
+    // faire en sorte que toute les cases soit false (lettre qui ont été trouver)
     //represente toute les lettres qui on été trouvé  
     this.wordtable = Array.from({length:this.word.length}, (i) => i = false )
     //       R         I            S          Q         U        E
@@ -37,7 +37,7 @@ export default class Motus {
       // dans la div creer je crée une id propre dans la ligne
       row.setAttribute("id", `row${i}`);
 
-      //j'ajiute une class
+      //j'ajoute une class
       row.classList.add(`rows`);
 
       //j'affiche dans mon tableau ou j'ai recup l'id la ligne suivis des cases
@@ -46,25 +46,32 @@ export default class Motus {
       for (let j = 0; j < this.word.length; j++) {
         const Cellule = document.createElement("div");
 
-        row.appendChild(Cellule);
+        row.appendChild(Cellule, ".");
 
         Cellule.setAttribute("id", `cellule${i}.${j}`);
         Cellule.classList.add("cell");
+        Cellule.innerHTML = ".";
       }
     }
-    this.putLetter(this.word[0], 0, 0)
+    this.putLetter(this.word[0], 0, 0);
   }
 
 
 
-  putLetter(letter, i, j) {
+  putLetter(letter, i, j,) {
+
 
     const x = document.getElementById(`cellule${i}.${j}`);
 
     x.innerHTML = letter.toUpperCase();
+  
 
 
   }
+
+  // addletter({
+    
+  // })
 
   keyBoardInput(key){
 
@@ -76,6 +83,8 @@ export default class Motus {
           
         this.wordtable[this.currentcolumn] = true
 
+      } else {
+        this.handleWrongLetter();
       }
       this.currentcolumn++;
       while (this.currentcolumn < this.word.length && this.wordtable[this.currentcolumn] == true) {
@@ -85,15 +94,18 @@ export default class Motus {
      
       this.currentcolumn = this.wordtable.findIndex( (v)=> v == false)
                  
-      this.currentrow++
+      this.currentrow++;
         
       for(let j = 0; j < this.word.length; j++ ){
 
         if(this.wordtable[j] === true){
 
           //passe sur toute les case de word table si oui je passe a a ligne correspondante 
-          this.putLetter(this.word[j], this.currentrow, j )
+          this.putLetter(this.word[j], this.currentrow, j, true )
 
+        }
+        if (this.currentcolumn === -1) {
+          this.handleVictory();
         }
 
       }
@@ -101,10 +113,31 @@ export default class Motus {
 
       }
     }
-
   }
 
+ handleWrongLetter() {
+    // Gestion des erreurs, par exemple, affichage d'un message
+    console.log("Lettre incorrecte !");
+    const cell = document.getElementById(`cellule${this.currentrow}.${this.currentcolumn}`);
+    cell.classList.add('wrong-letter');
+    console.log(cell);
+   
+  }
+
+  handleVictory() {
+    // Gestion de la victoire, par exemple, affichage d'un message de félicitations
+    console.log("Félicitations ! Vous avez complété le mot correctement.");
+    for (let j = 0; j < this.word.length; j++) {
+      const cell = document.getElementById(`cellule${this.currentrow}.${j}`);
+      cell.classList.add('victory');
+    }
+
+  }
   getWord() {
     console.log(this.word[0]);
   }
 }
+
+
+  
+
